@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendVerificationEmail
+class SendVerificationEmail 
 {
     /**
      * Create the event listener.
@@ -22,9 +22,14 @@ class SendVerificationEmail
     /**
      * Handle the event.
      */
-    public function handle(UserRegistered $event) {
+   public function handle(UserRegistered $event)
+{
+    try {
         Mail::to($event->user->email)->send(
             new VerificationMail($event->code)
         );
+    } catch (\Exception $e) {
+        \Log::error("Email failed: " . $e->getMessage());
     }
+}
 }

@@ -46,13 +46,9 @@ class AuthController extends Controller
 
             $code = $this->codeService->generateCode($user);
 
-            if (!event(new UserRegistered($user, $code))) {
-                throw new CodeSendingException();
-            }          
+            event(new UserRegistered($user, $code)) ;        
 
             return $this->success('تم إرسال كود التحقق',['user' => $user,'code' => $code]);
-
-
     }
 
      /**
@@ -94,9 +90,7 @@ class AuthController extends Controller
             
             $code = $this->codeService->generateCode($user);
 
-            if (!event(new UserRegistered($user, $code))) {
-                throw new CodeSendingException('فشل إرسال الكود');
-            }
+           event(new UserRegistered($user, $code));
             
         return $this->success('تم إرسال الكود بنجاح');
     }

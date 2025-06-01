@@ -8,7 +8,7 @@ use Exception;
 
 class UserRepository {
     public function findByEmail($email) {
-        return User::findOrFail('email', $email)->first();
+        return User::where('email', $email)->firstOrFail();
     }
 
     public function update(User $user, array $data) {
@@ -28,7 +28,9 @@ class UserRepository {
 
     public function deleteUserToken($user)
     {
-        $user->tokens()->delete();;
+        if ($user->tokens()) {
+            $user->tokens()->delete();
+        }
     }
 
      public function createToken($user)
