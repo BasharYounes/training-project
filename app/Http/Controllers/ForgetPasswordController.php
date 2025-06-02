@@ -10,6 +10,9 @@ use Hash;
 use App\Repositories\UserRepository;
 use App\Services\PasswordReset;
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Password;
+use Laravel\Sanctum\PersonalAccessToken;
+use Str;
 
 
 class ForgetPasswordController extends Controller
@@ -29,21 +32,36 @@ class ForgetPasswordController extends Controller
     
             $token = $this->userRepository->createToken($user);
                         
-            $resetLink = url("/reset-password?token=$token");
+            $resetLink = url("/api/reset-password?token=$token");
             
             if (!event(new UserResetPasswordEvent($user,$resetLink))) {
                 throw new CodeSendingException('فشل إرسال الرابط');
             }
             
-        return $this->success('تم إرسال رابط الاستعادة إلى بريدك');
+        return $this->success('تم إرسال رابط الاستعادة إلى بريدك',$resetLink);
     }
 
-    public function resetPassword(TokenAndPasswordRequest $request, UserRepository $userRepository) 
+    public function resetPassword(TokenAndPasswordRequest $request) 
     {
-            $user = auth()->user()->route('token');
-    
-            $userRepository->update($user,['password' => Hash::make($request->password)]);
-                
-        return $this->success('تم تغيير كلمة المرور بنجاح');
+            $token = $request->query('token');
+
+
+            if (!$token) {
+                return $this->error('توكن غير صالح', [],400);
+            }
+
+            $accessToken = PersonalAccessToken::findToken($token);
+
+            if (!$accessToken) {
+                return $this->error('توكن غير صالح', [],400);
+            }
+            $user = $accessToken->tokenable;
+
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+           $this->userRepository->deleteUserToken($user);
+
+        return response()->json(['message' => 'تم تحديث كلمة المرور بنجاح']);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rules\Password;
 class TokenAndPasswordRequest extends FormRequest
 {
     /**
@@ -22,8 +22,15 @@ class TokenAndPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => 'required|string',
-            'password' => 'required|min:8|confirmed',
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
         ];
     }
 }

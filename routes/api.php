@@ -24,12 +24,13 @@ Route::post('/register',[AuthController::class,'Register']);
 Route::post('/login',[AuthController::class,'login'])->middleware('throttle:5,1');
 Route::post('/verify-code',[AuthController::class,'VerifyCode']);
 Route::post('/resend-code',[AuthController::class,'ResendCode'])->middleware('throttle:3,10');
-Route::post('/forget-password',[ForgetPasswordController::class,'forgotPassword']);
-Route::post('/reset-password',[ForgetPasswordController::class,'resetPassword']);
+
 
 
 
 Route::middleware('auth:sanctum')->group( function () {
+    Route::post('/forget-password',[ForgetPasswordController::class,'forgotPassword']);
+    Route::post('/reset-password',[ForgetPasswordController::class,'resetPassword']);
     Route::post('/refresh-token',[AuthController::class,'refreshToken']);
     Route::post('/upload-file',[MediaController::class,'uploadProfileImage']);
     Route::post('/create-channel',[ChannelController::class,'store']);

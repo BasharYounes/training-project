@@ -16,15 +16,7 @@ class UserRepository {
         return $user;
     }
 
-    public function findByToken($token)
-    {
-            $resetToken = PasswordResetToken::where('token', $token)->first();
-
-            if (!$resetToken) {
-                    throw new Exception("الرابط غير صالح أو غير موجود");
-                }
-        return $resetToken;
-    }
+  
 
     public function deleteUserToken($user)
     {
@@ -35,6 +27,6 @@ class UserRepository {
 
      public function createToken($user)
     {
-        return $user->createToken('auth-token')->plainTextToken;
+        return $user->createToken('password-reset-token')->plainTextToken;
     }
 }

@@ -6,13 +6,14 @@ use App\Exceptions\Content\Audiobook\AudioRegistrationException;
 use App\Exceptions\Content\ContentRegistrationException;
 use App\Exceptions\Content\Podcast\PodcastRegistrationException;
 use App\Exceptions\FileStorageException;
+use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
-
+    use ApiResponse;
     
     /**
      * Register custom exception handling.
@@ -65,7 +66,6 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        // Handle specific exceptions first
         switch (true) {
             case $e instanceof RegistrationFailedException:
                 return $e->render();
@@ -92,13 +92,13 @@ class Handler extends ExceptionHandler
                 return $e->render();
                 
             case $e instanceof Exception:
-                return response()->json([
-                    'message' => 'حدث خطأ غير متوقع',
-                    'error' => $e->getMessage() 
-                ], 500);
+                return $this->error(
+                    'حدث خطأ غير متوقع',
+                     $e->getMessage() 
+                , 500);
                 
             default:
-                return response()->view('errors.custom', [], 500);
+                return $this->error('حدثت مشكلة أعد المحاولة بعد معرفة الخطأ',$e->getMessage());
         }
     }
 }
