@@ -45,23 +45,14 @@ class ForgetPasswordController extends Controller
     {
             $token = $request->query('token');
 
+            $accessToken = $this->userRepository->findToken($token);
 
-            if (!$token) {
-                return $this->error('توكن غير صالح', [],400);
-            }
-
-            $accessToken = PersonalAccessToken::findToken($token);
-
-            if (!$accessToken) {
-                return $this->error('توكن غير صالح', [],400);
-            }
             $user = $accessToken->tokenable;
 
-            $user->password = Hash::make($request->password);
-            $user->save();
+            $this->userRepository->update($user,['password' => Hash::make($request->password)]);
 
            $this->userRepository->deleteUserToken($user);
 
-        return response()->json(['message' => 'تم تحديث كلمة المرور بنجاح']);
+        return $this->success( 'تم تحديث كلمة المرور بنجاح');
     }
 }

@@ -29,4 +29,16 @@ class UserRepository {
     {
         return $user->createToken('password-reset-token')->plainTextToken;
     }
+
+    public function findToken($token){
+
+        $accessToken = PasswordResetToken::where('token', $token)->first();
+
+        if (!$accessToken) {
+                return $this->error('توكن غير صالح', [],400);
+            }
+    
+        return $accessToken;
+
+    }
 }
