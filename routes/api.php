@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/create-channel',[ChannelController::class,'store']);
     Route::post('/create-podcast/{channel_id}',[ContentController::class,'storePodcast']);
     Route::post('/create-audiobook/{channel_id}',[ContentController::class,'storeAudiobook']);
-    Route::post('/podcasts/{podcast}/comments', [CommentController::class, 'store']);
-    Route::get('/podcasts/{podcast}/comments', [CommentController::class, 'index']);
+    Route::post('/podcasts/{podcast_id}/comments', [CommentController::class, 'store']);
+    Route::get('/podcasts/{podcast_id}/comments', [CommentController::class, 'index']);
 
 });

@@ -31,8 +31,9 @@ class ContentController extends Controller
     )
     {}
 
-     public function storePodcast(StorePodcastRequest $request, Channel $channel): JsonResponse
+     public function storePodcast(StorePodcastRequest $request,$id): JsonResponse
     {
+        $channel = $this->channelRepository->findChannel($id);
    
         if(!$this->authorize('create', $channel))
         {
@@ -65,8 +66,10 @@ class ContentController extends Controller
         return $this->success('تمت العملية بنجاح');
     }
 
-    public function storeAudiobook(StoreAudiobookRequest $request, Channel $channel): JsonResponse
+    public function storeAudiobook(StoreAudiobookRequest $request,$id): JsonResponse
     {
+
+        $channel = $this->channelRepository->findChannel($id);
    
         $this->authorize('create', $channel);
 

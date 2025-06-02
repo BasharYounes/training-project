@@ -14,12 +14,11 @@ class CommentService
     )
     {}
 
-    public function createComment(User $user, Model $commentable, array $data, ?int $parentId = null)
+    public function createComment(User $user, Model $commentable, array $data)
     {
-        return DB::transaction(function () use ($user, $commentable, $data, $parentId) {
+        return DB::transaction(function () use ($user, $commentable, $data) {
             $data['user_id'] = $user->id;
-            $data['parent_id'] = $parentId;
-            $comment = $this->commentRepository->create([$data]);
+            $comment = $this->commentRepository->create($data);
 
             $comment->commentable()->associate($commentable);
             $comment->save();

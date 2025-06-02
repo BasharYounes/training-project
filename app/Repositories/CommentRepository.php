@@ -9,7 +9,7 @@ class CommentRepository
 {
     public function create(array $data): Comment
     {
-        return Comment::create($data);  
+        return new Comment($data);  
     }
     
     // public function getThreadedComments($commentable){

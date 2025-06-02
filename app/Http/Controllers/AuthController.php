@@ -114,7 +114,7 @@ class AuthController extends Controller
                throw new InvalidCodeException();
             }
             
-            $this->userRepository->update($user,['email_verified_at '=> now()]);        
+            $this->userRepository->update($user,['email_verified_at'=> now()]);        
 
            $this->casheService->forgetCodeFromCashe($user);
 

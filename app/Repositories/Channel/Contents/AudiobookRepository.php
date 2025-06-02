@@ -9,7 +9,7 @@ class AudiobookRepository
 {
       public function createAudiobook(Array $data)
     {
-        $audiobook = new Audiobook([$data]);
+        $audiobook = Audiobook::create($data);
 
          if(!$audiobook)
             {

@@ -9,7 +9,7 @@ class PodcastRepository
 {
     public function createPodcast(Array $data)
     {
-        $podcast = new Podcast([$data]);
+        $podcast = Podcast::create($data);
 
         if(!$podcast)
             {
@@ -18,4 +18,12 @@ class PodcastRepository
 
         return $podcast;
     }
+
+    public function findPodcast($id)
+    {
+        $podcast = Podcast::where('id',$id)->firstOrFail();
+
+        return $podcast;
+    }
+    
 }

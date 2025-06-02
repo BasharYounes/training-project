@@ -28,7 +28,7 @@ class UserRepository {
 
     public function deleteUserToken($user)
     {
-        if ($user->tokens()) {
+        if ($user->tokens()->exists()) {
             $user->tokens()->delete();
         }
     }

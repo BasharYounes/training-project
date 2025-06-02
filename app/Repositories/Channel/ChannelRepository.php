@@ -11,8 +11,8 @@ class ChannelRepository
 {
       public function createChannel($validated)
     {
-        $validated['user_id'] = auth()->id();
-        return Channel::create([$validated]);
+        $validated['user_id'] = auth()->user()->id;
+        return Channel::create($validated);
     }
 
        public function createObjectContent(Array $data, $audioPath, $coverPath)
@@ -20,7 +20,7 @@ class ChannelRepository
         $data['file_path'] = $audioPath;
         $data['cover_image'] = $coverPath;
 
-        $content = new Content([$data]);
+        $content = new Content($data);
         
       
 
@@ -40,6 +40,13 @@ class ChannelRepository
                     throw new ContentRegistrationException();
                 }
         return $Objcontent;       
+    }
+
+    public function findChannel($id)
+    {
+        $channel = Channel::where('id',$id)->firstOrFail();
+
+        return $channel;
     }
 
 }
