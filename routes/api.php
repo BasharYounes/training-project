@@ -5,6 +5,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PodcastController;
+use App\Http\Controllers\PodcastLikeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -28,6 +30,7 @@ Route::post('/resend-code',[AuthController::class,'ResendCode'])->middleware('th
 
 
 
+
 Route::middleware('auth:sanctum')->group( function () {
     Route::post('/forget-password',[ForgetPasswordController::class,'forgotPassword']);
     Route::post('/reset-password',[ForgetPasswordController::class,'resetPassword']);
@@ -37,6 +40,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/create-podcast/{channel_id}',[ContentController::class,'storePodcast']);
     Route::post('/create-audiobook/{channel_id}',[ContentController::class,'storeAudiobook']);
     Route::post('/podcasts/{podcast_id}/comments', [CommentController::class, 'store']);
-    Route::get('/podcasts/{podcast_id}/comments', [CommentController::class, 'index']);
+    Route::get('/podcasts/{podcast_id}/comments', [CommentController::class, 'getCommentsWithReplies']);
+    Route::post('/add-podcasts/{podcast_id}/like', [PodcastLikeController::class, 'store']);
+    Route::delete('/delete-podcasts/{podcast_id}/like', [PodcastLikeController::class, 'destroy']);
+    Route::get('/podcasts/random', [PodcastController::class, 'random']);
 
 });

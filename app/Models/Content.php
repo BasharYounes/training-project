@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Content extends Model
 {
+    use HasFactory;
     
     protected $fillable = ['channel_id','title','description','file_path','cover_image','published_at','contentable'];
 

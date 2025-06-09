@@ -25,5 +25,18 @@ class PodcastRepository
 
         return $podcast;
     }
+
+    public function storePodacstLike($podcast,$user)
+    {
+        $podcast->likes()->create([
+            'user_id' => $user->id,
+        ]);
+        return $podcast->likes();
+    }
+
+    public function deletePodacstLike($podcast,$user)
+    {
+        $podcast->likes()->where('user_id', $user->id)->delete();
+    }
     
 }

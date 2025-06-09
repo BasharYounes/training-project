@@ -4,9 +4,11 @@ namespace App\Repositories;
 
 use App\Models\PasswordResetToken;
 use App\Models\User;
+use App\Traits\ApiResponse;
 use Exception;
 
 class UserRepository {
+    use ApiResponse;
     public function findByEmail($email) {
         return User::where('email', $email)->firstOrFail();
     }

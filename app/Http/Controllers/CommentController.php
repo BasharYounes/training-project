@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
-use App\Http\Resources\CommentResource;
+use App\Resources\CommentResource;
 use App\Models\Podcast;
 use App\Repositories\Channel\Contents\PodcastRepository;
+use App\Resources\PodcastResource;
 use App\Services\CommentService;
 use App\Traits\ApiResponse;
 
@@ -31,11 +32,22 @@ class CommentController extends Controller
         return $this->success('تمت العنلية بنجاح',$comment,201);
     }
 
-    public function index($id)
+    public function getCommentsWithReplies($id)
     {
         $podcast = $this->podcastRepository->findPodcast($id);
 
         $comments = $this->commentService->getNestedComments($podcast);
         return $this->success('تمت العنلية بنجاح',CommentResource::collection($comments),200);
+    }
+
+    public function showCommentsPodcast($id)
+    {
+        $podcast = Podcast::with([
+            'comments.user',                  
+            'comments.replies.user',           
+            'comments.replies.replies.user',  
+        ])->findOrFail($id);
+
+        return $this->success('تمت العنلية بنجاح',PodcastResource::collection($podcast),200) ;
     }
 }
