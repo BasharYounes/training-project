@@ -27,6 +27,13 @@ A user-based podcast publishing platform built with Laravel during internship tr
 - `/app/Http/Requests`
 - `/routes/api.php`
 
+## 🚀 Getting Started
+1. Clone repo
+2. Run `composer install`
+3. Configure `.env` file and DB
+4. Run `php artisan migrate --seed`
+5. Visit `/dashboard` to start using
+
 ## 🔗 Project Link
 [GitHub Repository](https://github.com/BasharYounes/training-project)
 
